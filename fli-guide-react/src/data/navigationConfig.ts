@@ -1,5 +1,3 @@
-// These are to be rendered, in order, for the navigation bar.
-// This is just an arbitrary object type that I made for this, and can easily be changed if it's deemed unnecessary. -K
 export const navbarURLs = [
    {
       type: "item",
@@ -62,7 +60,10 @@ export const sidebarLinks = [
    {
       heading: "Official",
       links: [
-         { name: "Fantasy Life i Home Page", url: "https://www.fantasylife.jp/fli/en/" },
+         {
+            name: "Fantasy Life i Home Page",
+            url: "https://www.fantasylife.jp/fli/en/",
+         },
          {
             name: "L5 Workshop Devlog",
             url: "https://www.level5.co.jp/blog/en/",
@@ -78,6 +79,10 @@ export const sidebarLinks = [
             name: "Discord",
             url: "https://discord.gg/fantasylife-133342059787452416",
          },
+         {
+            name: "Pimez's Compendium & Guide Portal",
+            url: "https://steamcommunity.com/sharedfiles/filedetails/?id=3484233912",
+         },
          { name: "Reddit", url: "https://www.reddit.com/r/fantasylife/" },
          {
             name: "Wiki",
@@ -89,6 +94,7 @@ export const sidebarLinks = [
       heading: "Dev Corner",
       links: [
          { name: "Discord", url: "https://discord.gg/Xfqb5DXWPS" },
+         { name: "GitHub", url: "https://github.com/TiaMarieG/fli-guide-v3" },
          { name: "Special Thanks", url: "#" },
          { name: "Support FLi Guide", url: "https://ko-fi.com/mittoa_gaming" },
       ],
