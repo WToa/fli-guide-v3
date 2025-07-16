@@ -1,0 +1,38 @@
+services:
+   backend:
+      build:
+         context: ./fli-guide-backend
+      container_name: fli-backend
+      ports:
+         - "5000:5000"
+      environment:
+         - NODE_ENV=production
+      env_file:
+         - ./fli-guide-backend/.env
+      volumes:
+         - ./fli-guide-backend:/app
+      depends_on:
+         - db
+
+   frontend:
+      build:
+         context: ./fli-guide-react
+      ports:
+         - "5173:80" # React will be served via nginx from port 80 inside container
+      depends_on:
+         - backend
+
+   db:
+      image: mysql:8
+      environment:
+         MYSQL_USER: user
+         MYSQL_PASSWORD: password
+         MYSQL_ROOT_PASSWORD: password
+         MYSQL_DATABASE: fli_db
+      ports:
+         - "3307:3306"
+      volumes:
+         - mysql_data:/var/lib/mysql
+
+volumes:
+   mysql_data:

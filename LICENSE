@@ -1,0 +1,7 @@
+# FLi Guide
+
+This repository is a deployment wrapper for the FLi Guide frontend and backend.
+
+See licensing terms in each submodule:
+- [Frontend (React)](./fli-guide-react/LICENSE)
+- [Backend (Node.js)](./fli-guide-backend/LICENSE)
