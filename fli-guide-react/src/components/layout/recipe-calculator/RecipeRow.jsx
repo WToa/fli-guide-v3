@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Box, TextField, IconButton, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-
 import api from "../../../api/axios";
 
 const RecipeRow = ({
@@ -17,67 +16,107 @@ const RecipeRow = ({
       row.name && row.rank ? `${row.name} (${row.rank})` : row.name || ""
    );
    const [suggestions, setSuggestions] = useState([]);
-   const [selected, setSelected] = useState(!!row.id); // <- NEW
+   const [selected, setSelected] = useState(!!row.id);
+
+   const [activeIndex, setActiveIndex] = useState(-1);
 
    useEffect(() => {
-      if (selected) return;
-
-      if (!query || query.length < 2) {
+      const controller = new AbortController();
+      if (selected || query.length < 2) {
          setSuggestions([]);
          return;
       }
-
       const timeoutId = setTimeout(() => {
          api.get("/search-recipes", {
             params: { name: query },
+            signal: controller.signal,
          })
             .then((res) => {
-               console.log("Axios response:", res.data);
                setSuggestions(res.data || []);
             })
             .catch((err) => {
-               console.error("Error fetching suggestions:", err);
-               setSuggestions([]);
+               if (err.name !== "CanceledError") {
+                  console.error("Error fetching suggestions:", err);
+               }
             });
       }, 300);
-
-      return () => clearTimeout(timeoutId);
+      return () => {
+         clearTimeout(timeoutId);
+         controller.abort();
+      };
    }, [query, selected]);
 
    const handleSelect = (recipe) => {
       const displayName = recipe.rank
          ? `${recipe.name} (${recipe.rank})`
          : recipe.name;
-
       updateRow(index, {
          id: recipe.id,
          name: recipe.name,
          rank: recipe.rank || null,
       });
-
       setQuery(displayName);
       setSelected(true);
       setSuggestions([]);
+      setActiveIndex(-1);
    };
+
+   const handleKeyDown = (e) => {
+      if (suggestions.length === 0) return;
+
+      if (e.key === "ArrowDown") {
+         e.preventDefault();
+         setActiveIndex((prevIndex) =>
+            prevIndex === suggestions.length - 1 ? 0 : prevIndex + 1
+         );
+      } else if (e.key === "ArrowUp") {
+         e.preventDefault();
+         setActiveIndex((prevIndex) =>
+            prevIndex <= 0 ? suggestions.length - 1 : prevIndex - 1
+         );
+      } else if (e.key === "Enter" && activeIndex > -1) {
+         e.preventDefault();
+         handleSelect(suggestions[activeIndex]);
+      } else if (e.key === "Escape") {
+         e.preventDefault();
+         setSuggestions([]);
+      }
+   };
+
+   const listboxId = `recipe-suggestions-listbox-${index}`;
+   const getOptionId = (idx) => `recipe-suggestion-option-${index}-${idx}`;
 
    return (
       <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
          {/* Recipe Name Input with Suggestions */}
-         <Box position="relative" sx={{ flexGrow: 1, backgroundColor: "white" }}>
+         <Box
+            position="relative"
+            sx={{ flexGrow: 1, backgroundColor: "white" }}
+         >
             <TextField
                size="small"
                label="Recipe Name"
                value={query}
                onChange={(e) => {
                   setQuery(e.target.value);
-                  setSelected(false); // <- NEW
+                  setSelected(false);
+                  setActiveIndex(-1);
                }}
                autoComplete="off"
                fullWidth
+               role="combobox"
+               aria-autocomplete="list"
+               aria-expanded={suggestions.length > 0}
+               aria-controls={listboxId}
+               aria-activedescendant={
+                  activeIndex > -1 ? getOptionId(activeIndex) : undefined
+               }
+               onKeyDown={handleKeyDown}
             />
 
             {suggestions.length > 0 && (
                <Box
+                  id={listboxId}
                   role="listbox"
                   sx={{
                      position: "absolute",
@@ -87,17 +126,23 @@ const RecipeRow = ({
                      boxShadow: 2,
                      borderRadius: 1,
                      mt: 0.5,
-                     overflow: "hidden",
+                     overflow: "auto",
+                     maxHeight: 240,
                   }}
                >
-                  {suggestions.map((recipe) => (
+                  {suggestions.map((recipe, idx) => (
                      <Box
                         key={recipe.id}
+                        id={getOptionId(idx)}
                         role="option"
+                        aria-selected={activeIndex === idx}
                         onClick={() => handleSelect(recipe)}
+                        onMouseEnter={() => setActiveIndex(idx)}
                         sx={{
                            p: 1,
                            cursor: "pointer",
+                           backgroundColor:
+                              activeIndex === idx ? "#f0f0f0" : "transparent",
                            "&:hover": { backgroundColor: "#f0f0f0" },
                         }}
                      >
@@ -135,9 +180,7 @@ const RecipeRow = ({
                sx={{
                   backgroundColor: "#4caf50",
                   color: "white",
-                  "&:hover": {
-                     backgroundColor: "success.dark",
-                  },
+                  "&:hover": { backgroundColor: "success.dark" },
                }}
             >
                <AddIcon />
@@ -152,9 +195,7 @@ const RecipeRow = ({
                   sx={{
                      backgroundColor: "error.main",
                      color: "white",
-                     "&:hover": {
-                        backgroundColor: "error.dark",
-                     },
+                     "&:hover": { backgroundColor: "error.dark" },
                   }}
                >
                   <CloseIcon />

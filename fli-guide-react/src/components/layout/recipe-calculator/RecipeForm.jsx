@@ -40,64 +40,70 @@ const RecipeForm = ({ setResults, presetRows }) => {
    };
 
    useEffect(() => {
-      const fetchBreakdownsForEachRecipe = async () => {
-         const validRows = rows.filter((row) => row.id);
+      const handler = setTimeout(() => {
+         const fetchBreakdownsForEachRecipe = async () => {
+            const validRows = rows.filter((row) => row.id);
 
-         if (validRows.length === 0) {
-            setResults({
+            if (validRows.length === 0) {
+               setResults({
+                  craftedMaterials: new Map(),
+                  baseMaterials: new Map(),
+               });
+               return;
+            }
+
+            const combined = {
                craftedMaterials: new Map(),
                baseMaterials: new Map(),
-            });
-            return;
-         }
+            };
 
-         const combined = {
-            craftedMaterials: new Map(),
-            baseMaterials: new Map(),
+            for (const row of validRows) {
+               try {
+                  const res = await api.get(`/recipe-breakdown/${row.id}`);
+                  const data = res.data;
+                  const quantity = row.quantity || 1;
+
+                  for (const mat of data.craftedMaterials || []) {
+                     const existing = combined.craftedMaterials.get(mat.name);
+                     const totalAmt = mat.amount * quantity;
+                     if (existing) {
+                        existing.amount += totalAmt;
+                     } else {
+                        combined.craftedMaterials.set(mat.name, {
+                           amount: totalAmt,
+                           sources: mat.sources,
+                        });
+                     }
+                  }
+
+                  for (const mat of data.baseMaterials || []) {
+                     const existing = combined.baseMaterials.get(mat.name);
+                     const totalAmt = mat.amount * quantity;
+                     if (existing) {
+                        existing.amount += totalAmt;
+                     } else {
+                        combined.baseMaterials.set(mat.name, {
+                           amount: totalAmt,
+                           sources: mat.sources,
+                        });
+                     }
+                  }
+               } catch (err) {
+                  console.error(
+                     `Failed to fetch breakdown for recipe ${row.id}:`,
+                     err
+                  );
+               }
+            }
+            setResults(combined);
          };
 
-         for (const row of validRows) {
-            try {
-               const res = await api.get(`/recipe-breakdown/${row.id}`);
-               const data = res.data;
-               const quantity = row.quantity || 1;
+         fetchBreakdownsForEachRecipe();
+      }, 500); // Wait 500ms after the last change to `rows`
 
-               for (const mat of data.craftedMaterials || []) {
-                  const existing = combined.craftedMaterials.get(mat.name);
-                  const totalAmt = mat.amount * quantity;
-                  if (existing) {
-                     existing.amount += totalAmt;
-                  } else {
-                     combined.craftedMaterials.set(mat.name, {
-                        amount: totalAmt,
-                        sources: mat.sources,
-                     });
-                  }
-               }
-
-               for (const mat of data.baseMaterials || []) {
-                  const existing = combined.baseMaterials.get(mat.name);
-                  const totalAmt = mat.amount * quantity;
-                  if (existing) {
-                     existing.amount += totalAmt;
-                  } else {
-                     combined.baseMaterials.set(mat.name, {
-                        amount: totalAmt,
-                        sources: mat.sources,
-                     });
-                  }
-               }
-            } catch (err) {
-               console.error(
-                  `Failed to fetch breakdown for recipe ${row.id}:`,
-                  err
-               );
-            }
-         }
-         setResults(combined);
+      return () => {
+         clearTimeout(handler);
       };
-
-      fetchBreakdownsForEachRecipe();
    }, [rows, setResults]);
 
    return (

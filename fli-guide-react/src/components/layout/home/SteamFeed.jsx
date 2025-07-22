@@ -70,7 +70,7 @@ const SteamFeed = () => {
          >
             {items.map((item) => (
                <Paper
-                  key={item.guid || item.link} // Use a unique key from the data
+                  key={item.guid || item.link}
                   elevation={3}
                   sx={{
                      p: 2,

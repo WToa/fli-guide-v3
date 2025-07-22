@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Container, Grid, Box, Button } from "@mui/material";
 import api from "../api/axios";
 
@@ -27,6 +27,10 @@ const RecipeCalculator = () => {
    const [selectedBis, setSelectedBis] = useState([]);
    const [selectedMarco, setSelectedMarco] = useState([]);
    const [tabIndex, setTabIndex] = useState(0);
+
+   const onRankChange = useCallback((newRanks) => {
+      setSelectedRanks(newRanks);
+   }, []);
 
    // State for the material search autocomplete
    const [selectedSearchMaterial, setSelectedSearchMaterial] = useState(null);
@@ -149,7 +153,7 @@ const RecipeCalculator = () => {
                      <Grid>
                         <Presets
                            selectedRanks={selectedRanks}
-                           onRankChange={setSelectedRanks}
+                           onRankChange={onRankChange}
                            selectedQuestLives={selectedLife}
                            onQuestLivesChange={setSelectedLife}
                            selectedBiSCategories={selectedBis}
