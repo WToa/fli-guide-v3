@@ -24,11 +24,11 @@ If you don't wish to juggle running the two repos separately, you can use Docker
 From the root project directory:
 
 ```
-docker-compose up --build
+docker-compose up --build -d
 ```
 This will:
 - Build and start the React frontend on http://localhost:5173
-- Start the Node.js/Express backend on http://localhost:5000
+- Start the Node.js/Express backend on http://localhost:5025
 - Start a MySQL 8 database on port 3307 (mapped to container's 3306)
 - Seed the database with information the website needs to function correctly
 
@@ -47,6 +47,7 @@ DB_PASSWORD=password
 DB_NAME=fli_db
 DB_PORT=3306
 DB_DIALECT=mysql
+PORT=5025
 ```
 💡 You don’t need to edit this unless you want to override the defaults.
 

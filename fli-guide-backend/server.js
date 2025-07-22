@@ -7,7 +7,7 @@ const recipeRouter = require("./routes/recipeRouter");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5025;
 
 // Middleware
 app.use(cors());
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
    res.send("FLi Guide Backend is running!");
 });
 
-// Sync models (optional: set to false if DB already exists)
+// Sync models
 db.sequelize
    .sync({ alter: false })
    .then(() => {

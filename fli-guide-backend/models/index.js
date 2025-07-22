@@ -19,7 +19,7 @@ const QuestRankModel = require("./presets/questRank");
 // Join table models
 const RecipeMarcoModel = require("./joins/recipeMarco");
 const RecipeLifeRanksModel = require("./joins/recipeLifeRanks");
-const RecipeBisModel = require("./joins/recipeBis"); // ✅ Import the new join model
+const RecipeBisModel = require("./joins/recipeBis");
 
 const db = {};
 
@@ -40,7 +40,7 @@ db.MarcoRank = MarcoRankModel(sequelize, DataTypes);
 db.QuestRank = QuestRankModel(sequelize, DataTypes);
 db.RecipeMarco = RecipeMarcoModel(sequelize, DataTypes);
 db.RecipeLifeRanks = RecipeLifeRanksModel(sequelize, DataTypes);
-db.RecipeBis = RecipeBisModel(sequelize, DataTypes); // ✅ Define the new join model
+db.RecipeBis = RecipeBisModel(sequelize, DataTypes);
 
 // Core associations
 db.Material.hasMany(db.RecipeMaterial, { foreignKey: "material_id" });
@@ -58,34 +58,36 @@ db.RecipeRank.hasMany(db.Recipe, { foreignKey: "rank_id" });
 
 // Preset-related associations
 db.Recipe.belongsToMany(db.LifeRank, {
-   through: db.RecipeLifeRanks, // ✅ Corrected: Use the model
+   through: db.RecipeLifeRanks,
    foreignKey: "recipe_id",
    otherKey: "life_rank_id",
 });
 db.LifeRank.belongsToMany(db.Recipe, {
-   through: db.RecipeLifeRanks, // ✅ Corrected: Use the model
+   through: db.RecipeLifeRanks,
    foreignKey: "life_rank_id",
    otherKey: "recipe_id",
 });
 
 db.Recipe.belongsToMany(db.BisCategory, {
-   through: db.RecipeBis, // ✅ Corrected: Use the model
+   through: db.RecipeBis,
    foreignKey: "recipe_id",
    otherKey: "bis_category_id",
 });
 db.BisCategory.belongsToMany(db.Recipe, {
-   through: db.RecipeBis, // ✅ Corrected: Use the model
+   through: db.RecipeBis,
+   foreignKey: "bis_category_id",
+   otherKey: "recipe_id",
    foreignKey: "bis_category_id",
    otherKey: "recipe_id",
 });
 
 db.Recipe.belongsToMany(db.MarcoRank, {
-   through: db.RecipeMarco, // This one was already correct
+   through: db.RecipeMarco,
    foreignKey: "recipe_id",
    otherKey: "marco_rank_id",
 });
 db.MarcoRank.belongsToMany(db.Recipe, {
-   through: db.RecipeMarco, // This one was already correct
+   through: db.RecipeMarco,
    foreignKey: "marco_rank_id",
    otherKey: "recipe_id",
 });

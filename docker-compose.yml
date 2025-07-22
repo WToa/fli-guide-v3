@@ -4,7 +4,7 @@ services:
          context: ./fli-guide-backend
       container_name: fli-backend
       ports:
-         - "5000:5000"
+         - "5025:5025"
       environment:
          - NODE_ENV=production
       env_file:

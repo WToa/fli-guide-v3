@@ -10,7 +10,7 @@ COPY . .
 # Make sure wait script is executable
 RUN chmod +x wait-for.sh
 
-EXPOSE 5000
+EXPOSE 5025
 
 # Use the wait script as the entrypoint
 CMD ["./wait-for.sh"]
