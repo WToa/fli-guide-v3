@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Exit on error
+set -e  
+
 # Wait until MySQL is reachable
 echo "Waiting for MySQL at $DB_HOST:$DB_PORT..."
 
