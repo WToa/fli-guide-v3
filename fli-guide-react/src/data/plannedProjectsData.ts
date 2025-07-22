@@ -32,8 +32,8 @@ export const plannedProjects: ProjectItem[] = [
    {
       title: "Calculator Presets",
       updateSize: "Minor Update",
-      description: "Adding presets that generate a list of all items needed to fulfill crafting rank requirements.",
-      status: "In Development",
+      description: "Adding presets that generate a list of all items needed to fulfill crafting rank requirements. This project has been expanded to include presets for BiS gear, upgrading Marco's Shop, and being able to search for recipes by material.",
+      status: "Completed",
    },
    {
       title: "Island Planner",

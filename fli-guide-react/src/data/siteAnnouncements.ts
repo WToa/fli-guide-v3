@@ -31,4 +31,12 @@ export const siteAnnouncements = [
          "The tool that I'm planning to use to make the interactive map is currently being overhauled, so I will be switching to developing the Island Planner as it has been frequently requested.",
       date: "2025-06-24",
    },
+   {
+      id: 5,
+      type: "project",
+      title: "New Feature: Presets!",
+      message:
+         "Recipe Calculator now supports presets, allowing you to quickly generate recipes for Life tasks, BiS gear, and upgrading Marco's Shop. There's also a 'Search by Material' feature to find recipes based on a chosen material.",
+      date: "2025-07-22",
+   },
 ];

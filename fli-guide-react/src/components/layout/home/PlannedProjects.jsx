@@ -1,50 +1,21 @@
-import { useRef, useEffect, useState } from "react";
-import {
-   Box,
-   Tabs,
-   Tab,
-   Typography,
-   Paper,
-   Chip
-} from "@mui/material";
+import { useRef, useState, useMemo } from "react";
+import { Box, Tabs, Tab, Typography, Paper, Chip } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { plannedProjects } from "../../../data/plannedProjectsData";
+import { useScrollIndicator } from "../../../shared-logic/scrollIndicator";
 
 const statuses = ["In Development", "Planned", "Completed"];
 
-const PlannedProjects = () => {
+export const PlannedProjects = () => {
    const [tabIndex, setTabIndex] = useState(0);
-   const [showArrow, setShowArrow] = useState(false);
    const containerRef = useRef(null);
+   const showArrow = useScrollIndicator(containerRef, tabIndex); 
 
-   const status = statuses[tabIndex];
-   const filteredProjects = plannedProjects.filter(
-      (project) => project.status === status
-   );
-
-   const handleTabChange = (_, newIndex) => {
-      setTabIndex(newIndex);
-   };
-
-   useEffect(() => {
-      const el = containerRef.current;
-      if (!el) return;
-
-      const checkScroll = () => {
-         const shouldShow =
-            el.scrollHeight > el.clientHeight &&
-            el.scrollTop + el.clientHeight < el.scrollHeight - 1;
-         setShowArrow(shouldShow);
-      };
-
-      checkScroll();
-      el.addEventListener("scroll", checkScroll);
-      window.addEventListener("resize", checkScroll);
-
-      return () => {
-         el.removeEventListener("scroll", checkScroll);
-         window.removeEventListener("resize", checkScroll);
-      };
+   const filteredProjects = useMemo(() => {
+      const currentStatus = statuses[tabIndex];
+      return plannedProjects.filter(
+         (project) => project.status === currentStatus
+      );
    }, [tabIndex]);
 
    return (
@@ -65,23 +36,24 @@ const PlannedProjects = () => {
                "&::-webkit-scrollbar": { display: "none" },
             }}
          >
-            <Tabs value={tabIndex} onChange={handleTabChange} centered>
-               {statuses.map((status) => (
-                  <Tab key={status} label={status} />
+            <Tabs
+               value={tabIndex}
+               onChange={(_, newIndex) => setTabIndex(newIndex)}
+               centered
+            >
+               {statuses.map((s) => (
+                  <Tab key={s} label={s} />
                ))}
             </Tabs>
 
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 2, "& > :not(:last-child)": { mb: 2 } }}>
+               {" "}
                {filteredProjects.length > 0 ? (
-                  filteredProjects.map((project, index) => (
+                  filteredProjects.map((project) => (
                      <Paper
                         key={project.title}
                         elevation={3}
-                        sx={{
-                           p: 2,
-                           mb: index !== filteredProjects.length - 1 ? 2 : 0,
-                           backgroundColor: "#fbd688",
-                        }}
+                        sx={{ p: 2, backgroundColor: "#fbd688" }}
                      >
                         <Box
                            display="flex"
@@ -99,8 +71,6 @@ const PlannedProjects = () => {
                                        : "#2196f3",
                                  color: "#fff",
                                  fontWeight: 500,
-                                 pointerEvents: "none",
-                                 cursor: "default",
                               }}
                            />
                         </Box>
@@ -117,31 +87,24 @@ const PlannedProjects = () => {
             </Box>
          </Box>
 
-         {showArrow && (
-            <KeyboardArrowDownIcon
-               sx={{
-                  fontSize: 40,
-                  position: "absolute",
-                  bottom: 8,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  color: "text.secondary",
-                  opacity: 0.5,
-                  pointerEvents: "none",
-                  animation: "bounce 1.5s infinite",
-                  "@keyframes bounce": {
-                     "0%, 100%": {
-                        transform: "translateX(-50%) translateY(0)",
-                     },
-                     "50%": {
-                        transform: "translateX(-50%) translateY(6px)",
-                     },
-                  },
-               }}
-            />
-         )}
+         {showArrow && <KeyboardArrowDownIcon sx={arrowStyles} />}
       </Box>
    );
+};
+
+const arrowStyles = {
+   fontSize: 40,
+   position: "absolute",
+   bottom: 8,
+   left: "50%",
+   color: "text.secondary",
+   opacity: 0.5,
+   pointerEvents: "none",
+   animation: "bounce 1.5s infinite",
+   "@keyframes bounce": {
+      "0%, 100%": { transform: "translateX(-50%) translateY(0)" },
+      "50%": { transform: "translateX(-50%) translateY(6px)" },
+   },
 };
 
 export default PlannedProjects;

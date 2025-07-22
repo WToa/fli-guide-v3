@@ -9,7 +9,7 @@ import {
 import marcoRanks from "../../../../data/marcoRanks";
 
 // Import shared styles
-import { toggleStyles, tabPanelBoxStyles } from "../../../ui/presetStyles";
+import { toggleStyles, tabPanelBoxStyles } from "../../../../shared-logic/presetStyles";
 
 const MarcoTab = ({ selectedMarcoRanks, onMarcoRanksChange }) => {
    return (

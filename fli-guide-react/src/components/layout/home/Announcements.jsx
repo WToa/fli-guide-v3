@@ -1,7 +1,8 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useMemo } from "react";
 import { Typography, Paper, Box, Chip, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { siteAnnouncements } from "../../../data/siteAnnouncements";
+import { useScrollIndicator } from "../../../shared-logic/scrollIndicator"; 
 
 const typeColors = {
    maintenance: "#ffcccb",
@@ -11,28 +12,18 @@ const typeColors = {
 
 const Announcements = () => {
    const containerRef = useRef(null);
-   const [showArrow, setShowArrow] = useState(false);
+   const showArrow = useScrollIndicator(containerRef);
 
-   useEffect(() => {
-      const el = containerRef.current;
-      if (!el) return;
-
-      const checkScroll = () => {
-         const shouldShow =
-            el.scrollHeight > el.clientHeight &&
-            el.scrollTop + el.clientHeight < el.scrollHeight - 1;
-         setShowArrow(shouldShow);
-      };
-
-      checkScroll(); // initial
-      el.addEventListener("scroll", checkScroll);
-      window.addEventListener("resize", checkScroll);
-
-      return () => {
-         el.removeEventListener("scroll", checkScroll);
-         window.removeEventListener("resize", checkScroll);
-      };
-   }, []);
+   const formattedAnnouncements = useMemo(() => {
+      return [...siteAnnouncements].reverse().map((announcement) => ({
+         ...announcement,
+         formattedDate: new Date(
+            `${announcement.date}T00:00:00Z`
+         ).toLocaleDateString("en-US", {
+            timeZone: "UTC",
+         }),
+      }));
+   }, []); 
 
    return (
       <Box sx={{ position: "relative", borderRadius: 2 }}>
@@ -41,17 +32,17 @@ const Announcements = () => {
             sx={{
                maxHeight: 500,
                overflowY: "auto",
-               scrollbarWidth: "none", // Firefox
-               "&::-webkit-scrollbar": { display: "none" }, // Chrome
+               scrollbarWidth: "none",
+               "&::-webkit-scrollbar": { display: "none" },
                borderRadius: 2,
                backgroundColor: "#fff1b5",
                p: 2,
                boxShadow: 3,
             }}
          >
-            {[...siteAnnouncements].reverse().map((announcement, idx, arr) => {
+            {formattedAnnouncements.map((announcement, idx, arr) => {
                const isLast = idx === arr.length - 1;
-               const { id, title, message, type, date } = announcement;
+               const { id, title, message, type, formattedDate } = announcement;
 
                return (
                   <Paper
@@ -86,12 +77,7 @@ const Announcements = () => {
                         color="text.secondary"
                         gutterBottom
                      >
-                        {new Date(`${date}T00:00:00Z`).toLocaleDateString(
-                           "en-US",
-                           {
-                              timeZone: "UTC",
-                           }
-                        )}
+                        {formattedDate}
                      </Typography>
 
                      <Typography variant="body2">{message}</Typography>

@@ -12,7 +12,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import bisCategories from "../../../../data/bisConfig";
 
 // Import shared styles
-import { toggleStyles, tabPanelBoxStyles } from '../../../ui/presetStyles';
+import { toggleStyles, tabPanelBoxStyles } from '../../../../shared-logic/presetStyles';
 
 const BiSTab = ({ selectedBiSCategories, onBiSCategoriesChange }) => {
    return (

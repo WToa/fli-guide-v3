@@ -30,17 +30,26 @@ const Home = () => {
                      }}
                   >
                      <Typography gutterBottom>
-                        I’m so glad you’re here, and I hope this online resource
-                        helps you get the most out of your adventure. Curious
-                        about how the site is being developed, what’s coming
-                        next, or interested in contributing?
+                        I'm so glad you're here, and I hope this online resource
+                        helps you get the most out of your adventure through the
+                        world of Fantasy Life. My goal is for FLi-Guide to
+                        become the one-stop shop for everything related to
+                        Fantasy Life i: The Girl Who Steals Time.
+                     </Typography>
+                     <Typography gutterBottom>
+                        We’ve got a growing community of players, fans, and site
+                        contributors on Discord —whether you're looking to share
+                        tips, ask questions, or just chat about the game, you’re
+                        more than welcome to join us using the link below in Dev
+                        Corner. Feedback and ideas are always appreciated, and
+                        it's a great place to connect with others who love the
+                        game as much as you do.
                      </Typography>
                      <Typography>
-                        I’d love to hear your feedback and ideas! Whether you’d
-                        like to help by writing guides, submitting item data,
-                        testing features, or just sharing suggestions — every
-                        bit helps. Feel free to join the community on Discord —
-                        just follow the link in the Dev Corner section below.
+                        Also, if you're curious about how the site is built or
+                        interested in contributing directly, the GitHub
+                        repository is linked in the Dev Corner tab. Feel free to
+                        take a look or get involved!
                      </Typography>
                   </Paper>
                </Grid>
