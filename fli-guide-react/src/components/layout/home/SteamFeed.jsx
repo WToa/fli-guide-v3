@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Typography, Paper, Box, CircularProgress, Link } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useScrollIndicator } from "../../../shared-logic/scrollIndicator"; // Adjust path to your hook
+import { useScrollIndicator } from "../../../shared/scrollIndicator"; // Adjust path to your hook
 
 const SteamFeed = () => {
    const [items, setItems] = useState([]);

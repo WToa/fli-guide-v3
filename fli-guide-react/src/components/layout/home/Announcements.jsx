@@ -2,7 +2,7 @@ import { useRef, useMemo } from "react";
 import { Typography, Paper, Box, Chip, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { siteAnnouncements } from "../../../data/siteAnnouncements";
-import { useScrollIndicator } from "../../../shared-logic/scrollIndicator"; 
+import { useScrollIndicator } from "../../../shared/scrollIndicator"; 
 
 const typeColors = {
    maintenance: "#ffcccb",

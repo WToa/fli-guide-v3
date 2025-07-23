@@ -2,7 +2,7 @@ import { useRef, useState, useMemo } from "react";
 import { Box, Tabs, Tab, Typography, Paper, Chip } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { plannedProjects } from "../../../data/plannedProjectsData";
-import { useScrollIndicator } from "../../../shared-logic/scrollIndicator";
+import { useScrollIndicator } from "../../../shared/scrollIndicator";
 
 const statuses = ["In Development", "Planned", "Completed"];
 

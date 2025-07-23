@@ -9,8 +9,6 @@ const App = () => {
          <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/recipe-calculator" element={<RecipeCalculator />} />
-            
-            {/* <Route path="/recipe-calculator" element={<RecipeCalculator />} /> */}
          </Routes>
       </Router>
    );

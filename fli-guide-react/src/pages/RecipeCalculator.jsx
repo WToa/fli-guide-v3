@@ -6,10 +6,10 @@ import api from "../api/axios";
 import lifeRanksData from "../data/lifeRanks";
 import BaseLayout from "../components/layout/templates/BaseLayout";
 import WingWrapper from "../components/ui/WingWrapper";
-import Presets from "../components/layout/recipe-calculator/Presets";
-import RecipeForm from "../components/layout/recipe-calculator/RecipeForm";
-import Results from "../components/layout/recipe-calculator/Results";
-import MaterialSources from "../components/layout/recipe-calculator/MaterialSources";
+import Presets from "../components/layout/recipe_calculator/Presets";
+import RecipeForm from "../components/layout/recipe_calculator/RecipeForm";
+import Results from "../components/layout/recipe_calculator/Results";
+import MaterialSources from "../components/layout/recipe_calculator/MaterialSources";
 import headerImage from "../assets/images/banners/world_crafting_icons.jpg";
 
 const RecipeCalculator = () => {

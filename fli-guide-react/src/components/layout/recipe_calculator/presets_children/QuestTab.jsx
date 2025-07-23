@@ -13,7 +13,7 @@ import lives from "../../../../data/livesConfig";
 import ranks from "../../../../data/ranksConfig";
 
 // Import shared styles
-import { toggleStyles, tabPanelBoxStyles } from "../../../../shared-logic/presetStyles";
+import { toggleStyles, tabPanelBoxStyles } from "../../../../shared/presetStyles";
 
 // Helper function
 const toggleItem = (list, item) =>

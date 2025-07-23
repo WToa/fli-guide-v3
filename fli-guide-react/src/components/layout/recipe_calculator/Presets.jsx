@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import QuestTab from "./presets-children/QuestTab";
-import BiSTab from "./presets-children/BiSTab";
-import MarcoTab from "./presets-children/MarcoTab";
-import MaterialSearch from "./presets-children/MaterialSearch";
+import QuestTab from "./presets_children/QuestTab";
+import BiSTab from "./presets_children/BiSTab";
+import MarcoTab from "./presets_children/MarcoTab";
+import MaterialSearch from "./presets_children/MaterialSearch";
 
 const tabPanelBoxStyles = {
    backgroundColor: "#fbd688",
