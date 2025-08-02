@@ -1,4 +1,5 @@
-INSERT INTO marco_ranks (id, rank_number) VALUES
+INSERT INTO marco_ranks (id, rank_number) 
+VALUES
 (1, 1),
 (2, 2),
 (3, 3),
