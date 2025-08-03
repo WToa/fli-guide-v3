@@ -6,7 +6,7 @@ services:
       ports:
          - "5025:5025"
       environment:
-         - NODE_ENV=production
+         NODE_ENV: production
       env_file:
          - ./fli-guide-backend/.env
       volumes:
@@ -24,9 +24,7 @@ services:
 
    db:
       image: mysql:8
-      environment:
-         MYSQL_ROOT_PASSWORD: password # Change this to the password in your .env file
-         MYSQL_DATABASE: fli_db
+      env_file: ./fli-guide-backend/.env
       ports:
          - "3307:3306"
       volumes:
